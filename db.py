@@ -41,8 +41,8 @@ class Sat_Person_Patient_Details(Base):
 class Sat_Location_Patient_Address(Base):
     __tablename__ = 'sat_location_patient_address'
     id = Column(Integer, primary_key=True)
-    name = Column(String)
-    age = Column(Integer)
+    address = Column(String)
+    postcode = Column(String)
     hub_id = Column(Integer, ForeignKey(Hub_Location.id))
 
 class Patient(Base):
