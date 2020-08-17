@@ -1,0 +1,5 @@
+table,column,destination,hub,keys,links
+patient,name,sat_person_patient_details,hub_person,serums_id::age,person_location_link
+patient,age,sat_person_patient_details,hub_person,serums_id::age,person_location_link
+patient,address,sat_location_patient_address,hub_location,serums_id::age,person_location_link
+patient,postcode,sat_location_patient_address,hub_location,serums_id::age,person_location_link

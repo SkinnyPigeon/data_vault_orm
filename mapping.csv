@@ -1,5 +1,0 @@
-column,destination
-name,sat_person_patient_details
-age,sat_person_patient_details
-address,sat_location_patient_address
-postcode,sat_location_patient_address
