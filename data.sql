@@ -13,3 +13,7 @@ insert into patient_operations (serums_id, operations_id) values (2, 3);
 insert into patient_operations (serums_id, operations_id) values (2, 4);
 insert into patient_operations (serums_id, operations_id) values (2, 5);
 
+insert into doctors (doctor_id, name) values (1, 'Jeff');
+insert into doctors (doctor_id, name) values (2, 'Steve');
+insert into doctors (doctor_id, name) values (3, 'Dave');
+

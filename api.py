@@ -30,7 +30,10 @@ print(patient_csv)
 operations_csv = pd.read_csv('./operations.csv')
 print(operations_csv)
 
-for row, value in operations_csv.iterrows():
+doctors_csv = pd.read_csv('./doctors.csv')
+print(doctors_csv)
+
+for row, value in patient_csv.iterrows():
   table = value['table']
   column = value['column']
   destination = value['destination']
@@ -40,14 +43,17 @@ for row, value in operations_csv.iterrows():
   links = value['links']
   links = links.split('::')
 
-  print(table)
-  print(column)
-  print(destination)
-  print(hub)
-  print(keys)
-  print(links)  
+  transport_object = {
+    'table': table,
+    'column': column,
+    'destination': destination,
+    'hub': hub,
+    'keys': keys,
+    'links': links
+  }
 
-  
+  print(transport_object)
+
 
 
 ### Helper functions

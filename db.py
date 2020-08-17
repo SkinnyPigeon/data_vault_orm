@@ -88,4 +88,9 @@ class Patient_Operations(Base):
     serums_id = Column(Integer, ForeignKey(Patient.id), primary_key=True)
     operations_id = Column(Integer, ForeignKey(Operations.id), primary_key=True)
 
+class Doctors(Base):
+    __tablename__ = 'doctors'
+    doctor_id = Column(Integer, primary_key=True)
+    name = Column(String)
+
 Base.metadata.create_all(engine)
