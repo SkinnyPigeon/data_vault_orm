@@ -1,6 +1,7 @@
 from sqlalchemy import create_engine, MetaData, insert
 from sqlalchemy.orm import sessionmaker, load_only
-from db import Base, Patient, Hub_Person, Hub_Location, Person_Location_Link, Sat_Location_Patient_Address, Sat_Person_Patient_Details
+from db import Base, Hub_Person, Hub_Location, Hub_Object, Person_Location_Link, Person_Object_Link, Object_Location_Link, Sat_Person_Patient_Details, Sat_Location_Patient_Address, Sat_Object_Patient_Operations, Sat_Person_Doctors_Names, Patient, Operations, Patient_Operations, Doctors
+
 import pandas as pd
 
 import os
@@ -33,6 +34,24 @@ print(operations_csv)
 doctors_csv = pd.read_csv('./data/doctors.csv')
 print(doctors_csv)
 
+### Helper functions
+
+def get_hub(destination_table):
+    if "sat_person_" in destination_table:
+        return "hub_person"
+    elif "sat_location_" in destination_table:
+        return "hub_location"
+
+def get_class_by_tablename(table_fullname):
+  for class_name in Base._decl_class_registry.values():
+    if hasattr(class_name, '__table__') and class_name.__table__.fullname == table_fullname:
+      return class_name
+
+def insert_record(class_name):
+    print(class_name)
+
+
+
 for row, value in doctors_csv.iterrows():
   table = value['table']
   column = value['column']
@@ -53,21 +72,12 @@ for row, value in doctors_csv.iterrows():
   }
 
   print(transport_object)
+  source_table = get_class_by_tablename(transport_object['table'])
+  print("SOURCE TABLE: {}".format(source_table))
+  destination_table = get_class_by_tablename(transport_object['destination'])
+  print("DESTINATION: {}".format(destination_table))
 
-
-
-### Helper functions
-
-def get_hub(destination_table):
-    if "sat_person_" in destination_table:
-        return "hub_person"
-    elif "sat_location_" in destination_table:
-        return "hub_location"
-
-def get_class_by_tablename(table_fullname):
-  for class_name in Base._decl_class_registry.values():
-    if hasattr(class_name, '__table__') and class_name.__table__.fullname == table_fullname:
-      return class_name
-
-def insert_record(class_name):
-    print(class_name)
+  if links[0] != ' ':
+    print("OK")
+  else: 
+    print("NOPE")
