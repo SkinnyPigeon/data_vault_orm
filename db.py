@@ -32,18 +32,21 @@ class Hub_Object(Base):
 
 class Person_Location_Link(Base):
     __tablename__ = 'person_location_link'
-    person_id = Column(Integer, ForeignKey(Hub_Person.id), primary_key=True)
-    location_id = Column(Integer, ForeignKey(Hub_Location.id), primary_key=True)
+    id = Column(Integer, primary_key=True)
+    person_id = Column(Integer, ForeignKey(Hub_Person.id))
+    location_id = Column(Integer, ForeignKey(Hub_Location.id))
 
 class Person_Object_Link(Base):
     __tablename__ = 'person_object_link'
-    person_id = Column(Integer, ForeignKey(Hub_Person.id), primary_key=True)
-    object_id = Column(Integer, ForeignKey(Hub_Object.id), primary_key=True)
+    id = Column(Integer, primary_key=True)
+    person_id = Column(Integer, ForeignKey(Hub_Person.id))
+    object_id = Column(Integer, ForeignKey(Hub_Object.id))
 
 class Object_Location_Link(Base):
     __tablename__ = 'object_location_link'
-    object_id = Column(Integer, ForeignKey(Hub_Object.id), primary_key=True)
-    location_id = Column(Integer, ForeignKey(Hub_Location.id), primary_key=True)
+    id = Column(Integer, primary_key=True)
+    object_id = Column(Integer, ForeignKey(Hub_Object.id))
+    location_id = Column(Integer, ForeignKey(Hub_Location.id))
 
 class Sat_Person_Patient_Details(Base):
     __tablename__ = 'sat_person_patient_details'
