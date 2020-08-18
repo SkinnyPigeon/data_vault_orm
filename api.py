@@ -1,4 +1,4 @@
-from sqlalchemy import create_engine, MetaData, insert
+from sqlalchemy import create_engine, MetaData, insert, select
 from sqlalchemy.orm import sessionmaker, load_only
 from db import Base, Hub_Person, Hub_Location, Hub_Object, Person_Location_Link, Person_Object_Link, Object_Location_Link, Sat_Person_Patient_Details, Sat_Location_Patient_Address, Sat_Object_Patient_Operations, Sat_Person_Doctors_Names, Patient, Operations, Patient_Operations, Doctors
 
@@ -25,13 +25,13 @@ print(query.all())
 df = pd.read_sql(query.statement, con=con)
 print(df)
 
-patient_csv = pd.read_csv('./data/patient.csv')
+patient_csv = pd.read_csv('./csvs/patient.csv')
 print(patient_csv)
 
-operations_csv = pd.read_csv('./data/operations.csv')
+operations_csv = pd.read_csv('./csvs/operations.csv')
 print(operations_csv)
 
-doctors_csv = pd.read_csv('./data/doctors.csv')
+doctors_csv = pd.read_csv('./csvs/doctors.csv')
 print(doctors_csv)
 
 ### Helper functions
@@ -51,9 +51,16 @@ def insert_record(class_name):
     print(class_name)
 
 
+ref_id = 0
+source_table = get_class_by_tablename(patient_csv.iloc[0].table)
+print("SOURCE TABLE: {}".format(source_table))
 
+query = select([source_table])
+print("QUERY: {}".format(query))
+data_to_copy = pd.read_sql_query(query, engine)
+
+print("DATA: {}".format(data_to_copy))
 for row, value in patient_csv.iterrows():
-  table = value['table']
   columns = value['columns']
   columns = columns.split('::')
   destination = value['destination']
@@ -64,7 +71,6 @@ for row, value in patient_csv.iterrows():
   links = links.split('::')
 
   transport_object = {
-    'table': table,
     'columns': columns,
     'destination': destination,
     'hub': hub,
@@ -73,16 +79,9 @@ for row, value in patient_csv.iterrows():
   }
 
   print(transport_object)
-  source_table = get_class_by_tablename(transport_object['table'])
-  print("SOURCE TABLE: {}".format(source_table))
+
   destination_table = get_class_by_tablename(transport_object['destination'])
   print("DESTINATION: {}".format(destination_table))
   destination_hub = get_class_by_tablename(transport_object['hub'])
   print("DESTINATION HUB: {}".format(destination_hub))
 
-  
-
-  if links[0] != ' ':
-    print("OK")
-  else: 
-    print("NO LINKS")
