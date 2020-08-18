@@ -18,17 +18,20 @@ class Hub_Person(Base):
     __tablename__ = 'hub_person'
     id = Column(Integer, primary_key=True)
     serums_id = Column(Integer)
+    doctors_id = Column(Integer)
 
 class Hub_Location(Base):
     __tablename__ = 'hub_location'
     id = Column(Integer, primary_key=True)
     serums_id = Column(Integer)
+    hospital_id = Column(Integer)
 
 class Hub_Object(Base):
     __tablename__ = 'hub_object'
     id = Column(Integer, primary_key=True)
     serums_id = Column(Integer)
     operations_id = Column(Integer)
+    test_id = Column(Integer)
 
 class Person_Location_Link(Base):
     __tablename__ = 'person_location_link'
@@ -73,6 +76,27 @@ class Sat_Person_Doctors_Names(Base):
     id = Column(Integer, primary_key=True)
     name = Column(String)
 
+class Sat_Person_Test_Doctors(Base):
+    __tablename__ = 'sat_person_test_doctors'
+    id = Column(Integer, primary_key=True)
+    doctors_name = Column(String)
+
+class Sat_Person_Test_Patients(Base):
+    __tablename__ = 'sat_person_test_patients'
+    id = Column(Integer, primary_key=True)
+    patient_name = Column(String)
+
+class Sat_Object_Test_Details(Base):
+    __tablename__ = 'sat_object_test_details'
+    id = Column(Integer, primary_key=True)
+    test_name = Column(String)
+
+class Sat_Location_Test_Address(Base):
+    __tablename__ = 'sat_location_test_address'
+    id = Column(Integer, primary_key=True)
+    hospital_address = Column(String)
+    hospital_postcode = Column(String)
+
 class Patient(Base):
     __tablename__ = 'patient'
     id = Column(Integer, primary_key=True)
@@ -99,5 +123,18 @@ class Doctors(Base):
     id = Column(Integer, primary_key=True)
     doctor_id = Column(Integer)
     name = Column(String)
+
+class Tests(Base):
+    __tablename__ = 'tests'
+    id = Column(Integer, primary_key=True)
+    patient_name = Column(String)
+    serums_id = Column(Integer)
+    test_name = Column(String)
+    test_id = Column(Integer)
+    hospital_address = Column(String)
+    hospital_postcode = Column(String)
+    hospital_id = Column(Integer)
+    doctors_name = Column(String)
+    doctors_id = Column(Integer)
 
 Base.metadata.create_all(engine)
