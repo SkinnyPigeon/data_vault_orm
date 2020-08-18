@@ -24,16 +24,16 @@ print(query.all())
 df = pd.read_sql(query.statement, con=con)
 print(df)
 
-patient_csv = pd.read_csv('./patient.csv')
+patient_csv = pd.read_csv('./data/patient.csv')
 print(patient_csv)
 
-operations_csv = pd.read_csv('./operations.csv')
+operations_csv = pd.read_csv('./data/operations.csv')
 print(operations_csv)
 
-doctors_csv = pd.read_csv('./doctors.csv')
+doctors_csv = pd.read_csv('./data/doctors.csv')
 print(doctors_csv)
 
-for row, value in patient_csv.iterrows():
+for row, value in doctors_csv.iterrows():
   table = value['table']
   column = value['column']
   destination = value['destination']

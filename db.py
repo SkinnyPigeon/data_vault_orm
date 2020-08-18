@@ -14,8 +14,6 @@ PASSWORD = os.getenv('PASSWORD')
 
 engine = create_engine('postgresql://postgres:{}@localhost:5434/testing_v6'.format(PASSWORD), echo='debug')
 
-
-
 class Hub_Person(Base):
     __tablename__ = 'hub_person'
     id = Column(Integer, primary_key=True)
@@ -67,6 +65,11 @@ class Sat_Object_Patient_Operations(Base):
     operation_id = Column(Integer)
     description = Column(String)
 
+class Sat_Person_Doctors_Names(Base):
+    __tablename__ = 'sat_person_doctors_names'
+    id = Column(Integer, primary_key=True)
+    name = Column(String)
+
 class Patient(Base):
     __tablename__ = 'patient'
     id = Column(Integer, primary_key=True)
@@ -85,12 +88,13 @@ class Operations(Base):
 
 class Patient_Operations(Base):
     __tablename__ = 'patient_operations'
-    serums_id = Column(Integer, ForeignKey(Patient.id), primary_key=True)
+    patient_id = Column(Integer, ForeignKey(Patient.id), primary_key=True)
     operations_id = Column(Integer, ForeignKey(Operations.id), primary_key=True)
 
 class Doctors(Base):
     __tablename__ = 'doctors'
-    doctor_id = Column(Integer, primary_key=True)
+    id = Column(Integer, primary_key=True)
+    doctor_id = Column(Integer)
     name = Column(String)
 
 Base.metadata.create_all(engine)
