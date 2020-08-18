@@ -52,9 +52,10 @@ def insert_record(class_name):
 
 
 
-for row, value in doctors_csv.iterrows():
+for row, value in patient_csv.iterrows():
   table = value['table']
-  column = value['column']
+  columns = value['columns']
+  columns = columns.split('::')
   destination = value['destination']
   hub = value['hub']
   keys = value['keys']
@@ -64,7 +65,7 @@ for row, value in doctors_csv.iterrows():
 
   transport_object = {
     'table': table,
-    'column': column,
+    'columns': columns,
     'destination': destination,
     'hub': hub,
     'keys': keys,
@@ -76,8 +77,12 @@ for row, value in doctors_csv.iterrows():
   print("SOURCE TABLE: {}".format(source_table))
   destination_table = get_class_by_tablename(transport_object['destination'])
   print("DESTINATION: {}".format(destination_table))
+  destination_hub = get_class_by_tablename(transport_object['hub'])
+  print("DESTINATION HUB: {}".format(destination_hub))
+
+  
 
   if links[0] != ' ':
     print("OK")
   else: 
-    print("NOPE")
+    print("NO LINKS")
