@@ -1,10 +1,10 @@
 doctors_hubs = {
-    'table': 'patient',
+    'table': 'doctors',
     'hubs': [
         {
             'hub': 'hub_person',
             'keys': [
-                'doctor_id'
+                'doctors_id'
             ]
         }
     ]

@@ -4,7 +4,7 @@ operations_hubs = {
         {
             'hub': 'hub_object',
             'keys': [
-                'operation_id'
+                'operations_id'
             ]
         },
         {
@@ -19,7 +19,7 @@ operations_hubs = {
 operations_satellites = {
     'satellites': [
         {
-            'satellite': 'sat_object_patient_details',
+            'satellite': 'sat_object_patient_operations',
             'columns': [
                 'description'
             ],

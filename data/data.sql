@@ -13,9 +13,9 @@ insert into patient_operations (patient_id, operations_id) values (2, 3);
 insert into patient_operations (patient_id, operations_id) values (2, 4);
 insert into patient_operations (patient_id, operations_id) values (2, 5);
 
-insert into doctors (doctor_id, name) values (1, 'Jeff');
-insert into doctors (doctor_id, name) values (2, 'Steve');
-insert into doctors (doctor_id, name) values (3, 'Dave');
+insert into doctors (doctors_id, name) values (1, 'Jeff');
+insert into doctors (doctors_id, name) values (2, 'Steve');
+insert into doctors (doctors_id, name) values (3, 'Dave');
 
 
 insert into tests (id, patient_name, serums_id, test_name, test_id, hospital_address, hospital_postcode, hospital_id, doctors_name, doctors_id)

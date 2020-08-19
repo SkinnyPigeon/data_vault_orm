@@ -132,7 +132,7 @@ class Patient_Operations(Base):
 class Doctors(Base):
     __tablename__ = 'doctors'
     id = Column(Integer, primary_key=True)
-    doctor_id = Column(Integer)
+    doctors_id = Column(Integer)
     name = Column(String)
 
 class Tests(Base):

@@ -37,93 +37,83 @@ def get_link_table_value_to_insert(hub):
 
 def control_picker(class_name):
   if class_name == 'tests':
-    hubs = tests_hubs
-    links = tests_links
-    satellites = tests_satellites
+    return tests_hubs, tests_links, tests_satellites
   elif class_name == 'patient':
-    hubs = patient_hubs
-    links = patient_links
-    satellites = patient_satellites
+    return patient_hubs, patient_links, patient_satellites
   elif class_name == 'operations':
-    hubs = operations_hubs
-    links = operations_links
-    satellites = operations_satellites
+    return operations_hubs, operations_links, operations_satellites
   elif class_name == 'doctors':
-    hubs = doctors_hubs
-    links = doctors_links
-    satellites = doctors_satellites
+    return doctors_hubs, doctors_links, doctors_satellites
 
 
 ### Inserting the table
 
-control_picker('tests')
+hubs, links, satellites = control_picker('doctors')
 
 source_table = get_class_by_tablename(hubs['table'])
-# print("SOURCE TABLE: {}".format(source_table))
+print("SOURCE TABLE: {}".format(source_table))
 
-query = select([source_table])
+# query = select([source_table])
 # print("QUERY: {}".format(query))
-data_to_copy = pd.read_sql_query(query, engine)
+# data_to_copy = pd.read_sql_query(query, engine)
 
 # print("DATA: {}".format(data_to_copy))
 
-for row in data_to_copy.itertuples(index=False):
-  for hub in hubs['hubs']:
-    print("HUB: {}".format(hub))
-    keys_to_insert = {}
-    for key in hub['keys']:
-      try:
-        keys_to_insert.update({key: getattr(row, key)})
-      except:
-        print("Error")
+# for row in data_to_copy.itertuples(index=False):
+#   for hub in hubs['hubs']:
+#     print("HUB: {}".format(hub))
+#     keys_to_insert = {}
+#     for key in hub['keys']:
+#       try:
+#         keys_to_insert.update({key: getattr(row, key)})
+#       except:
+#         print("Error")
 
-    hub_to_insert = get_class_by_tablename(hub['hub'])
-    # print(keys_to_insert)
-    # print(hub_to_insert)
+#     hub_to_insert = get_class_by_tablename(hub['hub'])
     
-    hub_query = insert(hub_to_insert).values(keys_to_insert)
-    hub_result = engine.execute(hub_query, con=engine)
+#     hub_query = insert(hub_to_insert).values(keys_to_insert)
+#     hub_result = engine.execute(hub_query, con=engine)
 
-    hub_id = hub_result.returned_defaults[0]
+#     hub_id = hub_result.returned_defaults[0]
 
-    print("HUB NAME: {}".format(hub['hub']))
-    print("HUB ID: {}".format(hub_id))
+#     print("HUB NAME: {}".format(hub['hub']))
+#     print("HUB ID: {}".format(hub_id))
 
-    for satellite in satellites['satellites']:
-      if satellite['hub'] == hub['hub']:
+#     for satellite in satellites['satellites']:
+#       if satellite['hub'] == hub['hub']:
 
-        ### This might not be necessary
-        satellite['hub_id'] = hub_id
-        ###
+#         ### This might not be necessary
+#         satellite['hub_id'] = hub_id
+#         ###
 
-        satellite_to_insert = get_class_by_tablename(satellite['satellite'])
-        # print(satellite_to_insert)
-        columns_to_insert = {'hub_id': hub_id}
-        for column in satellite['columns']:
-          try:
-            columns_to_insert.update({column: getattr(row, column)})
-          except:
-            print("Error")
+#         satellite_to_insert = get_class_by_tablename(satellite['satellite'])
+#         # print(satellite_to_insert)
+#         columns_to_insert = {'hub_id': hub_id}
+#         for column in satellite['columns']:
+#           try:
+#             columns_to_insert.update({column: getattr(row, column)})
+#           except:
+#             print("Error")
 
-        satellite_query = insert(satellite_to_insert).values(columns_to_insert)
-        satellite_result = engine.execute(satellite_query, con=engine)
+#         satellite_query = insert(satellite_to_insert).values(columns_to_insert)
+#         satellite_result = engine.execute(satellite_query, con=engine)
 
-    id_name = get_link_table_value_to_insert(hub['hub'])
-    print("ID NAME: {}".format(id_name))
-    for link in links['links']:
-      print("LINK BEFORE: {}".format(link))
+#     id_name = get_link_table_value_to_insert(hub['hub'])
+#     print("ID NAME: {}".format(id_name))
+#     for link in links['links']:
+#       print("LINK BEFORE: {}".format(link))
 
-      for value in link['values']:
-        if value == id_name:
-          link['values'][value] = hub_id
-          print("LINK AFTER: {}".format(link))
+#       for value in link['values']:
+#         if value == id_name:
+#           link['values'][value] = hub_id
+#           print("LINK AFTER: {}".format(link))
 
-  # print(links)
-for link in links['links']:
-  link_to_insert = get_class_by_tablename(link['link'])
-  ids_to_insert = link['values']
-  link_query = insert(link_to_insert).values(ids_to_insert)
-  link_result = engine.execute(link_query, con=engine)
+#   # print(links)
+#   for link in links['links']:
+#     link_to_insert = get_class_by_tablename(link['link'])
+#     ids_to_insert = link['values']
+#     link_query = insert(link_to_insert).values(ids_to_insert)
+#     link_result = engine.execute(link_query, con=engine)
 
 
 
