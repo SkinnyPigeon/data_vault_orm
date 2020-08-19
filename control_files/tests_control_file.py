@@ -20,7 +20,9 @@ hubs = {
                 'test_id'
             ]
         }
-    ],
+    ]
+}
+satellites = {
     'satellites': [
         {
             'satellite': 'sat_person_test_patients',
@@ -55,7 +57,10 @@ hubs = {
             'hub': 'hub_object',
             'hub_id': 0
         }
-    ],
+    ]
+}
+    
+links = {
     'links': [
         {
             'link': 'person_object_link',
@@ -74,10 +79,10 @@ hubs = {
         {
             'link': 'object_location_link',
             'values': {
-                'object_id',
-                'location_id'
+                'object_id': 0,
+                'location_id': 0
             }
         }
           
     ]
-}
+}   

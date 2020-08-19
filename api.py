@@ -12,7 +12,7 @@ project_folder = os.path.expanduser('~/code/dv_testing/')
 load_dotenv(os.path.join(project_folder, '.env'))
 PASSWORD = os.getenv('PASSWORD')
 
-from control_files.tests_control_file_2 import hubs, links, satellites
+from control_files.tests_control_file import hubs, links, satellites
 
 engine = create_engine('postgresql://postgres:{}@localhost:5434/testing_v6'.format(PASSWORD), echo='debug')
 
@@ -42,15 +42,14 @@ def get_link_table_value_to_insert(hub):
 
 ### Inserting the table
 
-ref_id = 0
 source_table = get_class_by_tablename(hubs['table'])
-print("SOURCE TABLE: {}".format(source_table))
+# print("SOURCE TABLE: {}".format(source_table))
 
 query = select([source_table])
-print("QUERY: {}".format(query))
+# print("QUERY: {}".format(query))
 data_to_copy = pd.read_sql_query(query, engine)
 
-print("DATA: {}".format(data_to_copy))
+# print("DATA: {}".format(data_to_copy))
 
 for row in data_to_copy.itertuples(index=False):
   for hub in hubs['hubs']:
@@ -63,13 +62,16 @@ for row in data_to_copy.itertuples(index=False):
         print("Error")
 
     hub_to_insert = get_class_by_tablename(hub['hub'])
-    print(keys_to_insert)
-    print(hub_to_insert)
+    # print(keys_to_insert)
+    # print(hub_to_insert)
     
     hub_query = insert(hub_to_insert).values(keys_to_insert)
     hub_result = engine.execute(hub_query, con=engine)
 
     hub_id = hub_result.returned_defaults[0]
+
+    print("HUB NAME: {}".format(hub['hub']))
+    print("HUB ID: {}".format(hub_id))
 
     for satellite in satellites['satellites']:
       if satellite['hub'] == hub['hub']:
@@ -79,7 +81,7 @@ for row in data_to_copy.itertuples(index=False):
         ###
 
         satellite_to_insert = get_class_by_tablename(satellite['satellite'])
-        print(satellite_to_insert)
+        # print(satellite_to_insert)
         columns_to_insert = {'hub_id': hub_id}
         for column in satellite['columns']:
           try:
@@ -93,19 +95,19 @@ for row in data_to_copy.itertuples(index=False):
     id_name = get_link_table_value_to_insert(hub['hub'])
     print("ID NAME: {}".format(id_name))
     for link in links['links']:
-      print("LINK: {}".format(link))
+      print("LINK BEFORE: {}".format(link))
 
       for value in link['values']:
-        print("VALUE: {}".format(value))
-        try:
+        if value == id_name:
           link['values'][value] = hub_id
-        except:
-          print("NO LINKS")
-      
-      link_to_insert = get_class_by_tablename(link['link'])
-      ids_to_insert = link['values']
-      link_query = insert(link_to_insert).values(ids_to_insert)
-      link_result = engine.execute(link_query, con=engine)
+          print("LINK AFTER: {}".format(link))
+
+  # print(links)
+for link in links['links']:
+  link_to_insert = get_class_by_tablename(link['link'])
+  ids_to_insert = link['values']
+  link_query = insert(link_to_insert).values(ids_to_insert)
+  link_result = engine.execute(link_query, con=engine)
 
 
 
