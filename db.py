@@ -71,7 +71,6 @@ class Sat_Location_Patient_Address(Base):
 class Sat_Object_Patient_Operations(Base):
     __tablename__ = 'sat_object_patient_operations'
     id = Column(Integer, primary_key=True)
-    operation_id = Column(Integer)
     description = Column(String)
     hub_id = Column(Integer, ForeignKey(Hub_Object.id)) 
 

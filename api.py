@@ -12,7 +12,10 @@ project_folder = os.path.expanduser('~/code/dv_testing/')
 load_dotenv(os.path.join(project_folder, '.env'))
 PASSWORD = os.getenv('PASSWORD')
 
-from control_files.tests_control_file import hubs, links, satellites
+from control_files.tests_control_file import tests_hubs, tests_links, tests_satellites
+from control_files.patient_control_file import patient_hubs, patient_links, patient_satellites
+from control_files.operations_control_file import operations_hubs, operations_links, operations_satellites
+from control_files.doctors_control_file import doctors_hubs, doctors_links, doctors_satellites
 
 engine = create_engine('postgresql://postgres:{}@localhost:5434/testing_v6'.format(PASSWORD), echo='debug')
 
@@ -23,12 +26,6 @@ session = Session()
 
 ### Helper functions
 
-def get_hub(destination_table):
-    if "sat_person_" in destination_table:
-        return "hub_person"
-    elif "sat_location_" in destination_table:
-        return "hub_location"
-
 def get_class_by_tablename(table_fullname):
   for class_name in Base._decl_class_registry.values():
     if hasattr(class_name, '__table__') and class_name.__table__.fullname == table_fullname:
@@ -38,9 +35,28 @@ def get_class_by_tablename(table_fullname):
 def get_link_table_value_to_insert(hub):
   return hub[4:] + "_id"
 
+def control_picker(class_name):
+  if class_name == 'tests':
+    hubs = tests_hubs
+    links = tests_links
+    satellites = tests_satellites
+  elif class_name == 'patient':
+    hubs = patient_hubs
+    links = patient_links
+    satellites = patient_satellites
+  elif class_name == 'operations':
+    hubs = operations_hubs
+    links = operations_links
+    satellites = operations_satellites
+  elif class_name == 'doctors':
+    hubs = doctors_hubs
+    links = doctors_links
+    satellites = doctors_satellites
 
 
 ### Inserting the table
+
+control_picker('tests')
 
 source_table = get_class_by_tablename(hubs['table'])
 # print("SOURCE TABLE: {}".format(source_table))

@@ -1,4 +1,4 @@
-hubs = {
+tests_hubs = {
     'table': 'tests',
     'hubs': [
         {
@@ -22,7 +22,7 @@ hubs = {
         }
     ]
 }
-satellites = {
+tests_satellites = {
     'satellites': [
         {
             'satellite': 'sat_person_test_patients',
@@ -60,7 +60,7 @@ satellites = {
     ]
 }
     
-links = {
+tests_links = {
     'links': [
         {
             'link': 'person_object_link',
