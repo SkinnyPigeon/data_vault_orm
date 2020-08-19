@@ -1,2 +1,0 @@
-table,column,destination,hub,keys,links
-doctors,name,sat_person_doctors_names,hub_person,doctor_id, 

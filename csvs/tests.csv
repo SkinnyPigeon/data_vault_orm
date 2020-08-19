@@ -1,5 +1,0 @@
-table,columns,destination,hub,keys,links
-tests,doctors_name,sat_person_test_doctors,hub_person,doctors_id,person_location_link::person_object_link
-tests,patient_name,sat_person_test_patients,hub_person,serums_id,person_location_link::person_object_link
-tests,test_name,sat_object_test_details,hub_object,test_id,person_location_link::person_object_link
-tests,hospital_address::hospital_postcode,sat_person_patient_details,hub_location,hospital_id,person_location_link::person_object_link

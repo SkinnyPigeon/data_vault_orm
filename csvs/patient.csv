@@ -1,3 +1,0 @@
-table,columns,destination,hub,keys,links
-patient,name::age,sat_person_patient_details,hub_person,serums_id,person_location_link
-patient,address::postcode,sat_location_patient_address,hub_location,serums_id,person_location_link

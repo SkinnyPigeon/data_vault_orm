@@ -1,2 +1,0 @@
-table,column,destination,hub,keys,links
-operations,description,sat_object_patient_details,hub_object,serums_id::operation_id,person_object_link::object_location_link
