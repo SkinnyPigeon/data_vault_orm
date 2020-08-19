@@ -28,7 +28,7 @@ hubs = {
                 'patient_name'
             ],
             'hub': 'hub_person',
-            'hub_id': 0
+            'hub_id' : 0
         },
         {
             'satellite': 'sat_person_test_doctors',

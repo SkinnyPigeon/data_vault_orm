@@ -12,8 +12,7 @@ project_folder = os.path.expanduser('~/code/dv_testing/')
 load_dotenv(os.path.join(project_folder, '.env'))
 PASSWORD = os.getenv('PASSWORD')
 
-from control_files.tests_control_file import tests
-print("TESTS CONTROL FILE: {}".format(tests))
+from control_files.tests_control_file_2 import hubs, links, satellites
 
 engine = create_engine('postgresql://postgres:{}@localhost:5434/testing_v6'.format(PASSWORD), echo='debug')
 
@@ -62,7 +61,7 @@ def get_link_table_value_to_insert(hub):
 ### Inserting the table
 
 ref_id = 0
-source_table = get_class_by_tablename(tests['table'])
+source_table = get_class_by_tablename(hubs['table'])
 print("SOURCE TABLE: {}".format(source_table))
 
 query = select([source_table])
@@ -70,6 +69,8 @@ print("QUERY: {}".format(query))
 data_to_copy = pd.read_sql_query(query, engine)
 
 print("DATA: {}".format(data_to_copy))
+
+
 # for row, value in tests_csv.iterrows():
 #   columns = value['columns']
 #   columns = columns.split('::')
