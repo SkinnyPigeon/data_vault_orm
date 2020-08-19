@@ -21,24 +21,6 @@ con = engine.connect()
 Session = sessionmaker(bind=engine)
 session = Session()
 
-# query = session.query(Tests).filter(Tests.serums_id == 1)
-# print(query.all())
-
-# df = pd.read_sql(query.statement, con=con)
-# print(df)
-
-# patient_csv = pd.read_csv('./csvs/patient.csv')
-# print(patient_csv)
-
-# operations_csv = pd.read_csv('./csvs/operations.csv')
-# print(operations_csv)
-
-# doctors_csv = pd.read_csv('./csvs/doctors.csv')
-# print(doctors_csv)
-
-# tests_csv = pd.read_csv('./csvs/tests.csv')
-# print(tests_csv)
-
 ### Helper functions
 
 def get_hub(destination_table):
@@ -70,57 +52,64 @@ data_to_copy = pd.read_sql_query(query, engine)
 
 print("DATA: {}".format(data_to_copy))
 
+for row in data_to_copy.itertuples(index=False):
+  for hub in hubs['hubs']:
+    print("HUB: {}".format(hub))
+    keys_to_insert = {}
+    for key in hub['keys']:
+      try:
+        keys_to_insert.update({key: getattr(row, key)})
+      except:
+        print("Error")
 
-# for row, value in tests_csv.iterrows():
-#   columns = value['columns']
-#   columns = columns.split('::')
-#   destination = value['destination']
-#   hub = value['hub']
-#   keys = value['keys']
-#   keys = keys.split('::')
-#   links = value['links']
-#   links = links.split('::')
-
-#   transport_object = {
-#     'columns': columns,
-#     'destination': destination,
-#     'hub': hub,
-#     'keys': keys,
-#     'links': links
-#   }
-
-
-#   print("TRANSPORT_OBJECT: {}".format(transport_object))
-
-  # destination_table = get_class_by_tablename(transport_object['destination'])
-  # print("DESTINATION: {}".format(destination_table))
-  # destination_hub = get_class_by_tablename(transport_object['hub'])
-  # print("DESTINATION HUB: {}".format(destination_hub))
-
-  # for row, value in data_to_copy.iterrows():
+    hub_to_insert = get_class_by_tablename(hub['hub'])
+    print(keys_to_insert)
+    print(hub_to_insert)
     
-  #   keys_to_add = {}
-  #   for key in keys:
-  #     keys_to_add.update({key: value[key]})
-  #   key_query = insert(destination_hub).values(keys_to_add)
-  #   key_result = engine.execute(key_query)
-  #   hub_result = key_result.returned_defaults.values()[0]
-  #   print("HUB RESULT: {}".format(key_result.returned_defaults.values()[0]))
+    hub_query = insert(hub_to_insert).values(keys_to_insert)
+    hub_result = engine.execute(hub_query, con=engine)
+
+    hub_id = hub_result.returned_defaults[0]
+
+    for satellite in satellites['satellites']:
+      if satellite['hub'] == hub['hub']:
+
+        ### This might not be necessary
+        satellite['hub_id'] = hub_id
+        ###
+
+        satellite_to_insert = get_class_by_tablename(satellite['satellite'])
+        print(satellite_to_insert)
+        columns_to_insert = {'hub_id': hub_id}
+        for column in satellite['columns']:
+          try:
+            columns_to_insert.update({column: getattr(row, column)})
+          except:
+            print("Error")
+
+        satellite_query = insert(satellite_to_insert).values(columns_to_insert)
+        satellite_result = engine.execute(satellite_query, con=engine)
+
+    id_name = get_link_table_value_to_insert(hub['hub'])
+    print("ID NAME: {}".format(id_name))
+    for link in links['links']:
+      print("LINK: {}".format(link))
+
+      for value in link['values']:
+        print("VALUE: {}".format(value))
+        try:
+          link['values'][value] = hub_id
+        except:
+          print("NO LINKS")
+      
+      link_to_insert = get_class_by_tablename(link['link'])
+      ids_to_insert = link['values']
+      link_query = insert(link_to_insert).values(ids_to_insert)
+      link_result = engine.execute(link_query, con=engine)
 
 
-  #   values_to_add = {'hub_id': hub_result}
-  #   for column in columns:
-  #     values_to_add.update({column: value[column]})
 
-  #   print("VALUES TO ADD: {}".format(values_to_add))
-  #   value_query = insert(destination_table).values(values_to_add)
-  #   result = engine.execute(value_query)
-  #   print("RESULT: {}".format(result))
-  #   print("RESULT METHODS: {}".format(dir(result)))
-
-
-
-
-
+# for hub in hubs['hubs']:
+#   print(hub)
 
 

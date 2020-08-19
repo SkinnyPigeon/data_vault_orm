@@ -100,7 +100,7 @@ class Sat_Object_Test_Details(Base):
     hub_id = Column(Integer, ForeignKey(Hub_Object.id)) 
 
 class Sat_Location_Test_Address(Base):
-    __tablename__ = 'sat_location_test_address'
+    __tablename__ = 'sat_location_hospital_address'
     id = Column(Integer, primary_key=True)
     hospital_address = Column(String)
     hospital_postcode = Column(String)
