@@ -14,6 +14,9 @@ PASSWORD = os.getenv('PASSWORD')
 
 engine = create_engine('postgresql://postgres:{}@localhost:5434/testing_v6'.format(PASSWORD), echo='debug')
 
+
+### DV Tables
+
 class Hub_Person(Base):
     __tablename__ = 'hub_person'
     id = Column(Integer, primary_key=True)
@@ -70,32 +73,41 @@ class Sat_Object_Patient_Operations(Base):
     id = Column(Integer, primary_key=True)
     operation_id = Column(Integer)
     description = Column(String)
+    hub_id = Column(Integer, ForeignKey(Hub_Object.id)) 
 
 class Sat_Person_Doctors_Names(Base):
     __tablename__ = 'sat_person_doctors_names'
     id = Column(Integer, primary_key=True)
     name = Column(String)
+    hub_id = Column(Integer, ForeignKey(Hub_Person.id))
 
 class Sat_Person_Test_Doctors(Base):
     __tablename__ = 'sat_person_test_doctors'
     id = Column(Integer, primary_key=True)
     doctors_name = Column(String)
+    hub_id = Column(Integer, ForeignKey(Hub_Person.id))
 
 class Sat_Person_Test_Patients(Base):
     __tablename__ = 'sat_person_test_patients'
     id = Column(Integer, primary_key=True)
     patient_name = Column(String)
+    hub_id = Column(Integer, ForeignKey(Hub_Person.id))
 
 class Sat_Object_Test_Details(Base):
     __tablename__ = 'sat_object_test_details'
     id = Column(Integer, primary_key=True)
     test_name = Column(String)
+    hub_id = Column(Integer, ForeignKey(Hub_Object.id)) 
 
 class Sat_Location_Test_Address(Base):
     __tablename__ = 'sat_location_test_address'
     id = Column(Integer, primary_key=True)
     hospital_address = Column(String)
     hospital_postcode = Column(String)
+    hub_id = Column(Integer, ForeignKey(Hub_Location.id))
+
+
+### Source tables
 
 class Patient(Base):
     __tablename__ = 'patient'

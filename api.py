@@ -12,6 +12,9 @@ project_folder = os.path.expanduser('~/code/dv_testing/')
 load_dotenv(os.path.join(project_folder, '.env'))
 PASSWORD = os.getenv('PASSWORD')
 
+from control_files.tests_control_file import tests
+print("TESTS CONTROL FILE: {}".format(tests))
+
 engine = create_engine('postgresql://postgres:{}@localhost:5434/testing_v6'.format(PASSWORD), echo='debug')
 
 con = engine.connect()
@@ -19,23 +22,23 @@ con = engine.connect()
 Session = sessionmaker(bind=engine)
 session = Session()
 
-query = session.query(Patient).filter(Patient.serums_id == 1)
-print(query.all())
+# query = session.query(Tests).filter(Tests.serums_id == 1)
+# print(query.all())
 
-df = pd.read_sql(query.statement, con=con)
-print(df)
+# df = pd.read_sql(query.statement, con=con)
+# print(df)
 
-patient_csv = pd.read_csv('./csvs/patient.csv')
-print(patient_csv)
+# patient_csv = pd.read_csv('./csvs/patient.csv')
+# print(patient_csv)
 
-operations_csv = pd.read_csv('./csvs/operations.csv')
-print(operations_csv)
+# operations_csv = pd.read_csv('./csvs/operations.csv')
+# print(operations_csv)
 
-doctors_csv = pd.read_csv('./csvs/doctors.csv')
-print(doctors_csv)
+# doctors_csv = pd.read_csv('./csvs/doctors.csv')
+# print(doctors_csv)
 
-tests_csv = pd.read_csv('./csvs/tests.csv')
-print(tests_csv)
+# tests_csv = pd.read_csv('./csvs/tests.csv')
+# print(tests_csv)
 
 ### Helper functions
 
@@ -59,7 +62,7 @@ def get_link_table_value_to_insert(hub):
 ### Inserting the table
 
 ref_id = 0
-source_table = get_class_by_tablename(tests_csv.iloc[0].table)
+source_table = get_class_by_tablename(tests['table'])
 print("SOURCE TABLE: {}".format(source_table))
 
 query = select([source_table])
@@ -67,26 +70,26 @@ print("QUERY: {}".format(query))
 data_to_copy = pd.read_sql_query(query, engine)
 
 print("DATA: {}".format(data_to_copy))
-for row, value in tests_csv.iterrows():
-  columns = value['columns']
-  columns = columns.split('::')
-  destination = value['destination']
-  hub = value['hub']
-  keys = value['keys']
-  keys = keys.split('::')
-  links = value['links']
-  links = links.split('::')
+# for row, value in tests_csv.iterrows():
+#   columns = value['columns']
+#   columns = columns.split('::')
+#   destination = value['destination']
+#   hub = value['hub']
+#   keys = value['keys']
+#   keys = keys.split('::')
+#   links = value['links']
+#   links = links.split('::')
 
-  transport_object = {
-    'columns': columns,
-    'destination': destination,
-    'hub': hub,
-    'keys': keys,
-    'links': links
-  }
+#   transport_object = {
+#     'columns': columns,
+#     'destination': destination,
+#     'hub': hub,
+#     'keys': keys,
+#     'links': links
+#   }
 
 
-  # print("TRANSPORT_OBJECT: {}".format(transport_object))
+#   print("TRANSPORT_OBJECT: {}".format(transport_object))
 
   # destination_table = get_class_by_tablename(transport_object['destination'])
   # print("DESTINATION: {}".format(destination_table))

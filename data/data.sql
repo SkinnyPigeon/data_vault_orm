@@ -19,7 +19,7 @@ insert into doctors (doctor_id, name) values (3, 'Dave');
 
 
 insert into tests (id, patient_name, serums_id, test_name, test_id, hospital_address, hospital_postcode, hospital_id, doctors_name, doctors_id)
-values (1, 'Euan', 1, 'Back check', 1, '123 Fake Street', 'AB25', 1, 'Jeff', 1);
+values (1, 'Euan', 1, 'Knee check', 1, '123 Fake Street', 'AB25', 1, 'Jeff', 1);
 insert into tests (id, patient_name, serums_id, test_name, test_id, hospital_address, hospital_postcode, hospital_id, doctors_name, doctors_id)
-values (2, 'Euan', 1, 'Head check', 1, '345 Fake Street', 'AB42', 2, 'Dave', 3);
+values (2, 'Euan', 1, 'Arm check', 2, '345 Fake Street', 'AB42', 2, 'Dave', 3);
 
