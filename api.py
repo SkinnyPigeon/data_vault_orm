@@ -48,7 +48,7 @@ def control_picker(class_name):
 
 ### Inserting the table
 
-hubs, links, satellites = control_picker('doctors')
+hubs, links, satellites = control_picker('patient')
 
 source_table = get_class_by_tablename(hubs['table'])
 print("SOURCE TABLE: {}".format(source_table))
@@ -83,15 +83,31 @@ for row in data_to_copy.itertuples(index=False):
       if satellite['hub'] == hub['hub']:
         satellite_to_insert = get_class_by_tablename(satellite['satellite'])
         # print(satellite_to_insert)
-        columns_to_insert = {'hub_id': hub_id}
-        for column in satellite['columns']:
-          try:
-            columns_to_insert.update({column: getattr(row, column)})
-          except:
-            print("Error")
 
-        satellite_query = insert(satellite_to_insert).values(columns_to_insert)
-        satellite_result = engine.execute(satellite_query, con=engine)
+        # CAN SKIP EMPTY SATELLITES IF THE PATIENT TAGS DICTATE IT. IT STILL KEEPS THE RELATIONSHIPS INTACT
+        if len(satellite['columns']) == 0:
+          continue
+        else:
+          columns_to_insert = {'hub_id': hub_id}
+          for column in satellite['columns']:
+            try:
+              columns_to_insert.update({column: getattr(row, column)})
+            except:
+              print("Error")
+
+          satellite_query = insert(satellite_to_insert).values(columns_to_insert)
+          satellite_result = engine.execute(satellite_query, con=engine)
+
+        # ORIGINAL CODE THAT DOES NOT SKIP EMPTY SATELLITES      
+        # columns_to_insert = {'hub_id': hub_id}
+        # for column in satellite['columns']:
+        #   try:
+        #     columns_to_insert.update({column: getattr(row, column)})
+        #   except:
+        #     print("Error")
+
+        # satellite_query = insert(satellite_to_insert).values(columns_to_insert)
+        # satellite_result = engine.execute(satellite_query, con=engine)
 
     id_name = get_link_table_value_to_insert(hub['hub'])
     print("ID NAME: {}".format(id_name))
